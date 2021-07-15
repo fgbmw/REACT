@@ -97,6 +97,39 @@ const movies = {
   },
 };
 
+function createFavoriteMovieText(userName, movieName) {
+ 	return `${userName} favorite movie is ${movieName}.`;
+}
+
+
+function createFavoriteMovieTexts() {
+	let texts = [];
+  
+  
+  for (const [, user] of Object.entries(users)) {
+    if (user.hasOwnProperty('name') && user.hasOwnProperty('id')) {
+
+      const userName = user.name
+      const userId = user.id
+      const userProfiles = profiles.filter(profile => profile.userID === userId.toString());
+      
+      for (const userProfile of userProfiles) {
+
+        for (const [, movie] of Object.entries(movies)) {
+          
+        	if (movie.hasOwnProperty('name') && movie.hasOwnProperty('id')) {
+            	const movieName = movie.name
+      			const movieId = movie.id
+                
+                if (movieId.toString() === userProfile.favoriteMovieID) texts.push(createFavoriteMovieText(userName, movieName));
+            }
+        }
+      }
+    }
+  }
+  console.dir(texts);
+  return texts;
+}
 class App extends Component {
   render() {
     return (
@@ -106,6 +139,13 @@ class App extends Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>Favorite Movies</h2>
+		<ol>
+        {
+          createFavoriteMovieTexts().map((text, index) => (
+            <li key={index}>{text}</li>
+          ))
+        }
+		</ol>
       </div>
     );
   }
